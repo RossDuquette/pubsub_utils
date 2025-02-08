@@ -1,0 +1,3 @@
+[submodule "src/pubsub_cpp"]
+	path = src/pubsub_cpp
+	url = git@github.com:RossDuquette/pubsub_cpp.git
