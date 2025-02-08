@@ -33,6 +33,15 @@ RECORD_SRCS += \
 RECORD_OBJS := $(subst $(SRC_DIR),$(BUILD_DIR),$(patsubst %.cpp,%.o,$(RECORD_SRCS)))
 
 #
+# playback
+#
+PLAYBACK_SRCS += \
+	$(PUBSUB_DIR)/publisher.cpp \
+	$(SRC_DIR)/playback.cpp \
+
+PLAYBACK_OBJS := $(subst $(SRC_DIR),$(BUILD_DIR),$(patsubst %.cpp,%.o,$(PLAYBACK_SRCS)))
+
+#
 # Recipes
 #
 DEPS := $(shell find $(SRC_DIR) -name "*.h")
@@ -59,7 +68,7 @@ CC = @echo '   ' CC $@; g++
 LD = @echo '   ' LD $@; g++
 endif
 
-all: pub sub record
+all: pub sub record playback
 
 pub: $(PUB_OBJS)
 	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
@@ -68,6 +77,9 @@ sub: $(SUB_OBJS)
 	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
 
 record: $(RECORD_OBJS)
+	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
+
+playback: $(PLAYBACK_OBJS)
 	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS)
