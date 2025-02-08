@@ -24,6 +24,15 @@ SUB_SRCS += \
 SUB_OBJS := $(subst $(SRC_DIR),$(BUILD_DIR),$(patsubst %.cpp,%.o,$(SUB_SRCS)))
 
 #
+# record
+#
+RECORD_SRCS += \
+	$(PUBSUB_DIR)/subscriber.cpp \
+	$(SRC_DIR)/record.cpp \
+
+RECORD_OBJS := $(subst $(SRC_DIR),$(BUILD_DIR),$(patsubst %.cpp,%.o,$(RECORD_SRCS)))
+
+#
 # Recipes
 #
 DEPS := $(shell find $(SRC_DIR) -name "*.h")
@@ -50,12 +59,15 @@ CC = @echo '   ' CC $@; g++
 LD = @echo '   ' LD $@; g++
 endif
 
-all: pub sub
+all: pub sub record
 
 pub: $(PUB_OBJS)
 	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
 
 sub: $(SUB_OBJS)
+	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
+
+record: $(RECORD_OBJS)
 	$(LD) -o $(BUILD_DIR)/$@ $^ $(LDFLAGS)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS)
